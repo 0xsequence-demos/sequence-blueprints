@@ -9,7 +9,7 @@ import { Button } from "~/components/button/Button";
 import { useSticky } from "~/components/sticky/useSticky";
 import { AccountPopup } from "boilerplate-design-system";
 import { useOpenWalletModal } from "@0xsequence/kit-wallet";
-
+import Footer from "~/components/Footer";
 function patchFocusToHandleRecursionError() {
   // handle focus recursion issue with opening wallet inventory
 
@@ -55,7 +55,7 @@ function Wallet() {
 
 export default function SiteLayout() {
   const [ref] = useSticky();
-  return (
+  const mainContent = (
     <div className="flex flex-col flex-1 pb-12">
       <div
         data-component="sticky-reference"
@@ -183,10 +183,12 @@ export default function SiteLayout() {
           </div>
         </div>
       </div>
-
-      {/* <footer className="border-t border-white/20">
-        <h2 className="sr-only">Footer</h2>
-        </footer> */}
     </div>
+  );
+  return (
+    <>
+      {mainContent}
+      <Footer />
+    </>
   );
 }
