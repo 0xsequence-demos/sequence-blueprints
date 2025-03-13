@@ -15,7 +15,7 @@ const info = {
   platforms: {
     web: "https://docs.sequence.xyz/solutions/wallets/ecosystem/overview",
   },
-  description: "Manage your wallet with ease for your ecosystem",
+  description: "Create an ecosystem wallet - cross-app and native to your ecosystem.",
 } as const;
 
 const resources: ResourceName[] = ["ecosystem-wallet"];
@@ -32,8 +32,15 @@ function component() {
 
   return (
     <>
-      <h2>Explore the Ecosystem of Wallets</h2>
-      Create a wallet for your ecosystem and manage it with ease
+      <h2>Create an Ecosystem Wallet for your chain or app.</h2>
+      <p>
+        Experience a seamless, embedded UX for native applications in your ecosystem while enabling users to leverage their same address in applications beyond from external marketplaces to DEX's.
+      </p>
+      
+      <p>
+        Try out our ecosystem demo portal below with Acme by logging in. Play Mining Quest and mint items from the Discover tab for the cross-app experience. Then list or sell them on the marketplace for a native experience:
+      </p>
+      
       <div className="relative aspect-[calc(3/4)] lg:aspect-[calc(8/5)] w-full overflow-hidden mx-auto rounded-xl">
         <button
           className="absolute top-0 left-0 w-full h-full bg-transparent"
