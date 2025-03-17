@@ -5,7 +5,9 @@ import { createPagesFunctionHandler } from '@react-router/cloudflare';
 // eslint-disable-next-line import/no-unresolved
 import * as build from '../build/server';
 
-const remixHandler = createPagesFunctionHandler({ build });
+declare const caches: CacheStorage & { default: Cache };
+
+export const remixHandler = createPagesFunctionHandler({ build });
 
 // Cache with stale-while-revalidate support
 // --
@@ -14,30 +16,169 @@ const remixHandler = createPagesFunctionHandler({ build });
 // will serve the page from the cache and it will refresh the cache in the background.
 // This ensures we can offer fast load times for clients, while also keeping our pages
 // up to date every 5 minutes. 
+//
+// NOTE: this is used instead of the default cloudflare cache, as we have more control
+// and can serve stale content while revalidating in the background.
 let cacheEnabled = true;
 let cacheDefaultTTL = 300; // 5 minutes
 let cacheStaleWhileRevalidateTTL = 86400 * 2; // 2 days in seconds
 
+// All requests to remix go through this function as a cloudflare worker.
 export const onRequest: PagesFunction = async (context) => {
-  const { request } = context;
+  const { request, waitUntil } = context;
 
   // Only cache GET requests. Others go straight through. Or if cache is disabled.
   if (request.method !== 'GET' || !cacheEnabled) {
     const response = await remixHandler(context);
+    response.headers.set('x-cache', 'SKIP');
+    response.headers.set('cache-control', 'no-cache, no-store, must-revalidate');
     return response;
   }
 
-  // Standard cloudflare cache with stale-while-revalidate.
+  const cache = caches.default;
+  const cacheKey = new Request(request.url, request);
+
+  // Try to find cached response
+  let cachedResponse = await cache.match(cacheKey);
+
+  // Figure out how old our cached response is
+  const now = Date.now();
+  let birthTime = null; // Default to null to indicate no valid timestamp
+  if (cachedResponse) {
+    const bornHeader = cachedResponse.headers.get('x-cache-born');
+    if (bornHeader) {
+      const parsed = parseInt(bornHeader, 10);
+      if (!Number.isNaN(parsed)) {
+        birthTime = parsed;
+      }
+    }
+  }
+
+  // Calculate age only if we have a valid birthTime
+  const age = birthTime ? (now - birthTime) / 1000 : Infinity; // Age in seconds or Infinity if no valid birthTime
+  let isFresh = false;
+  let canServeStale = false;
+  let shouldRevalidate = false;
+
+  if (cachedResponse) {
+    if (age < cacheDefaultTTL) {
+      // It's still within our 300s fresh window
+      isFresh = true;
+    } else if (age < cacheDefaultTTL + cacheStaleWhileRevalidateTTL) {
+      // It's beyond the fresh TTL but within 'stale-while-revalidate'
+      canServeStale = true;
+      shouldRevalidate = true;
+    }
+  }
+
+  // 1) Serve a FRESH response immediately
+  if (cachedResponse && isFresh) {
+    const freshResponse = new Response(cachedResponse.body, cachedResponse);
+    return serveCachedResponse(freshResponse, age, now, true);
+  }
+
+  // 2) If we have a STALE response that we can serve...
+  if (cachedResponse && canServeStale) {
+    const staleResponse = new Response(cachedResponse.body, cachedResponse);
+
+    // Kick off a background refresh if we're in the stale-while-revalidate window
+    if (shouldRevalidate) {
+      waitUntil((async () => {
+        try {
+          const newResponse = await getFreshRemixResponse(context);
+          // Only store it if it's 200 OK
+          if (newResponse.status === 200) {
+            await cacheSave(cache, cacheKey, newResponse);
+          }
+        } catch (err) {
+          // If refresh fails, ignore. We'll rely on stale-if-error next time.
+        }
+      })());
+    }
+
+    return serveCachedResponse(staleResponse, age, now, false);
+  }
+
+  // 3) Otherwise, MISS: fetch a fresh response from Remix
+  try {
+    const newResponse = await getFreshRemixResponse(context);
+    // Only cache if 200 OK
+    if (newResponse.status === 200) {
+      waitUntil(cacheSave(cache, cacheKey, newResponse));
+    }
+    newResponse.headers.set('x-cache-age', `0`);
+    newResponse.headers.set('x-now', `${now}`);
+    return newResponse;
+  } catch (error) {
+    // If we can't get a fresh response, and have a stale fallback, serve it
+    if (cachedResponse) {
+      const fallback = new Response(cachedResponse.body, cachedResponse);
+      return serveCachedResponse(fallback, 0, now, false);
+    }
+    // Otherwise return 500
+    return new Response('Internal worker error', { status: 500 });
+  }
+};
+
+/**
+ * Helper: Fetch a fresh response from Remix and wrap it with our caching headers.
+ */
+async function getFreshRemixResponse(context: Parameters<PagesFunction>[0]) {
   const response = await remixHandler(context);
+  const newResponse = new Response(response.body, response);
 
-  // Informs browsers the caching policy for this page, so browsers will cache the
-  // page for a short time.
-  response.headers.set('cache-control', `max-age=${cacheDefaultTTL}`);
+  // If not 200 OK, don't set any 'x-cache-born' so we skip caching
+  if (newResponse.status !== 200) {
+    newResponse.headers.set('x-cache', 'MISS');
+    response.headers.set('cache-control', 'no-cache, no-store, must-revalidate');
+    return newResponse;
+  }
 
-  // Informs cloudflare edge servers the caching policy for their servers.
-  // Note the use of stale-with-revalidate.
-  response.headers.set('cdn-cache-control', `max-age=${cacheDefaultTTL}, stale-while-revalidate=${cacheStaleWhileRevalidateTTL}, stale-if-error=${cacheStaleWhileRevalidateTTL}`);
+  // Mark the time we fetched it
+  const now = Date.now();
+  newResponse.headers.set('x-cache-born', `${now}`);
+  newResponse.headers.set('x-now', `${now}`);
 
-  // Serve the content.
+  // Inform cloudflare to not cache the response
+  // as we're using our own caching layer on top of it
+  newResponse.headers.set(
+    'cache-control',
+    `max-age=${cacheDefaultTTL}`
+    // 'no-cache, no-store, must-revalidate'
+  );
+
+  // Custom response headers
+  newResponse.headers.set('x-cache', 'MISS');
+
+  return newResponse;
+}
+
+async function cacheSave(cache: Cache, cacheKey: Request, response: Response) {
+  const addToCache = response.clone();
+
+  // here we set the cdn-cache-control header, as this is how long the 'cache'
+  // store will know to keep the response for
+  addToCache.headers.set(
+    'cdn-cache-control',
+    `max-age=${cacheStaleWhileRevalidateTTL}`
+  )
+
+  // store in the worker cache, this is separate layer from the typical cf cache.
+  return cache.put(cacheKey, addToCache);
+}
+
+function serveCachedResponse(response: Response, age: number, now: number, isFresh: boolean) {
+  response.headers.set('x-cache', isFresh ? 'HIT' : 'STALE');
+  response.headers.set('x-cache-age', `${age}`);
+  response.headers.set('x-now', `${now}`);
+
+  // we override to tell cloudflare's cdn layer about it, when a lower cache time
+  // for its layer.
+  response.headers.set(
+    'cdn-cache-control',
+    `max-age=${cacheDefaultTTL}`
+  )
+
+  // serve the response
   return response;
 }
