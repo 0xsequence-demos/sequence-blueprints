@@ -15,7 +15,7 @@ const info = {
   description: "Link Multiple Wallets to bring your players' assets together",
 } as const;
 
-const resources: ResourceName[] = ["wallet-linking-boilerplate"];
+const resources: ResourceName[] = [];
 
 const dependencies = [MultipleWalletConnectWidget];
 

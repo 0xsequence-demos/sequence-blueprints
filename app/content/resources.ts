@@ -12,7 +12,6 @@ export type ResourceName =
   | "kit-universal-wallet-react-boilerplate"
   | "stytch-embedded-wallet-react-boilerplate"
   | "universal-wallet-react-boilerplate"
-  | "wallet-linking-boilerplate"
   | "gift-wallet-inventory-boilerplate"
   | "crypto-onramp-boilerplate"
   | "sequence-pay-boilerplate"
@@ -278,15 +277,6 @@ export const resources: {
       topLeft: "sequencejs",
       topRight: "react",
     },
-  },
-  "wallet-linking-boilerplate": {
-    image: {
-      src: "",
-      alt: undefined,
-    },
-    type: "boilerplate",
-    title: "",
-    links: [],
   },
   "gift-wallet-inventory-boilerplate": {
     image: {
