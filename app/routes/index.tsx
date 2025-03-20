@@ -49,13 +49,12 @@ export default function IndexRoute() {
             Blueprints
           </h1>
           <p className="mt-4">
-            Explore with the Sequence stack with interactive examples.
+            Explore the Sequence platform with interactive examples. 
           </p>
           <p>
-            See how effortlessly you can build, manage, and scale powerful
-            blockchain apps.
+            See how easy it is to build, manage, and scale powerful 
+            blockchain use cases for your chain, game, or app.
           </p>
-          <p>No setup, just code.</p>
         </div>
 
         <div className="w-full grid grid-cols-1 mx-auto sm:mx-none sm:max-w-none sm:grid-cols-2 md:grid-cols-3 gap-4 items-stretch">
