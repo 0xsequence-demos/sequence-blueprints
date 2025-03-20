@@ -49,9 +49,11 @@ export default function IndexRoute() {
             Blueprints
           </h1>
           <p className="mt-4">
-            Follow our Blueprints to get an overview on Sequence features to
-            onboard users, unlock new monetization opportunities, and
-            supercharge your app with seamless Web3 integrations.
+            Explore the Sequence platform with interactive examples. 
+          </p>
+          <p>
+            See how easy it is to build, manage, and scale powerful 
+            blockchain use cases for your chain, game, or app.
           </p>
         </div>
 
