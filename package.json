@@ -27,6 +27,7 @@
     "@0xsequence/kit-wallet": "4.6.4",
     "@0xsequence/metadata": "^2.2.14",
     "@0xsequence/network": "^2.2.14",
+    "@databeat/tracker": "^0.9.3",
     "@react-router/cloudflare": "^7.1.1",
     "@react-spring/three": "^9.7.5",
     "@react-three/drei": "^9.121.4",
