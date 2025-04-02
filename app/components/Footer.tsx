@@ -8,7 +8,7 @@ import {
 import { Databeat } from '@databeat/tracker'
 
 export const analytics = new Databeat('https://databeat.sequence.app', {
-  jwt: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHAiOiJzZXEtZG9jcyIsImV4cCI6MTcxMjIxNDYzNn0.qWxTAvdiD1mWUZaEMFwp3_Xq-aFmMzzoIU8h4a8xG9c',
+  jwt: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHAiOiJzZXEtZG9jcyIsImV4cCI6MjA1ODk3NTQyMn0.loEnIIuIzhCsNQJxLteK7ynTlHXbVR7siKx1j5G7ojY',
 })
 
 export default function Footer() {
