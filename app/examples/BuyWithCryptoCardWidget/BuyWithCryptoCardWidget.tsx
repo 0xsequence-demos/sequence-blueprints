@@ -1,7 +1,7 @@
 /* starthide */
 import { usePublicClient, useWalletClient, useAccount } from "wagmi";
 import { ContractInfo } from "@0xsequence/metadata";
-import { useERC1155SaleContractCheckout } from "@0xsequence/kit-checkout";
+import { useERC1155SaleContractCheckout } from "@0xsequence/checkout";
 
 interface BuyWithCryptoCardWidgetProps {
   tokenId: string;

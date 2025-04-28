@@ -1,6 +1,6 @@
 /* starthide */
 import { useAccount } from "wagmi";
-import { useSwapModal, type SwapModalSettings } from "@0xsequence/kit-checkout";
+import { useSwapModal, type SwapModalSettings } from "@0xsequence/checkout";
 import { WalletConnectionDetail } from "~/components/wallet-connection-detail/WalletConnectionDetail";
 import { ethers } from "ethers";
 import { useState } from "react";

@@ -1,7 +1,7 @@
 /* starthide */
 import { Session, SessionSettings } from "@0xsequence/auth";
 import { ethers } from "ethers";
-import { useOpenConnectModal } from "@0xsequence/kit";
+import { useOpenConnectModal } from "@0xsequence/connect";
 import { findSupportedNetwork, networks } from "@0xsequence/network";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Form } from "react-router";

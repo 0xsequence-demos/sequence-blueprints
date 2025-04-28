@@ -1,4 +1,4 @@
-import { useOpenConnectModal } from "@0xsequence/kit";
+import { useOpenConnectModal } from "@0xsequence/connect";
 export function RequireWalletButton(props: { title?: string; label?: string }) {
   const { title, label } = props;
 

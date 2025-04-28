@@ -1,5 +1,5 @@
 /* starthide */
-import { useOpenConnectModal } from "@0xsequence/kit";
+import { useOpenConnectModal } from "@0xsequence/connect";
 import { useAccount, useDisconnect } from "wagmi";
 import { WalletConnectionDetail } from "~/components/wallet-connection-detail/WalletConnectionDetail";
 export const AuthenticationWidget = () => {

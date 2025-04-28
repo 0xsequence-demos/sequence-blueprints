@@ -10,8 +10,11 @@ import {
 import type { LinksFunction } from "react-router";
 import "./tailwind.css";
 import { Toaster } from "sonner";
-import { getDefaultWaasConnectors, KitProvider } from "@0xsequence/kit";
-import { KitWalletProvider } from "@0xsequence/kit-wallet";
+import {
+  getDefaultWaasConnectors,
+  SequenceConnectProvider,
+} from "@0xsequence/connect";
+import { SequenceWalletProvider } from "@0xsequence/wallet-widget";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
   createConfig,
@@ -27,11 +30,10 @@ import chains from "~/utils/chains";
 import { Favicon } from "~/components/favicon/Favicon";
 import { useNonce } from "~/providers/nonce-provider";
 
-import styles from "@0xsequence/design-system/styles.css?url";
 import { SkipAhead } from "~/components/skip-ahead/SkipAhead";
 import { useState } from "react";
 import shiki from "./shiki.css?url";
-import { KitCheckoutProvider } from "@0xsequence/kit-checkout";
+import { SequenceCheckoutProvider } from "@0xsequence/checkout";
 import { WindowController } from "~/components/window-controller/WindowController";
 import { WindowRoot } from "~/components/window-controller/WindowRoot";
 import { WindowPortal } from "~/components/window-controller/WindowPortal";
@@ -39,7 +41,6 @@ import dsbStyles from "boilerplate-design-system/styles/index.css?url";
 import { ChainId } from "@0xsequence/network";
 
 export const links: LinksFunction = () => [
-  { rel: "stylesheet", href: styles },
   { rel: "stylesheet", href: dsbStyles },
 
   { rel: "stylesheet", href: shiki },
@@ -150,7 +151,7 @@ export function useConfig() {
     appleClientId,
     appleRedirectURI,
     defaultChainId: ChainId.ARBITRUM_SEPOLIA,
-    appName: "Kit Starter",
+    appName: "WEB SDK Starter",
     projectAccessKey,
   });
 
@@ -185,16 +186,16 @@ export default function App() {
   return (
     <WagmiProvider config={config} initialState={initialState}>
       <QueryClientProvider client={queryClient}>
-        <KitProvider config={kitConfig}>
-          <KitWalletProvider>
-            <KitCheckoutProvider>
+        <SequenceConnectProvider config={kitConfig}>
+          <SequenceWalletProvider>
+            <SequenceCheckoutProvider>
               <WindowController>
                 <WindowRoot />
                 <WindowPortal />
               </WindowController>
-            </KitCheckoutProvider>
-          </KitWalletProvider>
-        </KitProvider>
+            </SequenceCheckoutProvider>
+          </SequenceWalletProvider>
+        </SequenceConnectProvider>
       </QueryClientProvider>
     </WagmiProvider>
   );

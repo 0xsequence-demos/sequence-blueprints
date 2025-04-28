@@ -1,7 +1,6 @@
 import { useAccount } from "wagmi";
 import { ContractInventoryWidget } from "~/examples/ContractInventoryWidget";
 import { PlayCard } from "../../components/playcard/PlayCard";
-import { Resources } from "~/components/resources/Resources";
 
 const info = {
   name: "contract-inventory",
@@ -27,7 +26,8 @@ function component() {
   return (
     <>
       <h2>View Assets from a Single Contract</h2>
-      Sequence Kit combines our Indexer with elegant out-of-the-box UI, to simplify realtime inventory viewing and management.
+      Web SDK combines our Indexer with elegant out-of-the-box UI, to simplify
+      realtime inventory viewing and management.
       <PlayCard>
         <PlayCard.Preview botMood={!address ? "dead" : "happy"}>
           <ContractInventoryWidget />

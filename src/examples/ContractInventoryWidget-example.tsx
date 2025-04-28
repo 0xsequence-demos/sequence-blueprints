@@ -1,7 +1,6 @@
-import { useOpenWalletModal } from "@0xsequence/kit-wallet";
-import { useOpenConnectModal } from "@0xsequence/kit";
+import { useOpenWalletModal } from "@0xsequence/wallet-widget";
+import { useOpenConnectModal } from "@0xsequence/connect";
 import { useAccount } from "wagmi";
-import { arbitrumSepolia } from "wagmi/chains";
 import { WalletConnectionDetail } from "~/components/wallet-connection-detail/WalletConnectionDetail";
 export const ContractInventoryWidget = () => {
   const { address } = useAccount();
@@ -10,19 +9,7 @@ export const ContractInventoryWidget = () => {
   return address ? (
     <>
       <WalletConnectionDetail address={address} />
-      <button
-        onClick={() =>
-          setOpenWalletModal(true, {
-            defaultNavigation: {
-              location: "collection-details",
-              params: {
-                contractAddress: "0x36631c1e690714192614364ae9629850b546d194",
-                chainId: arbitrumSepolia.id,
-              },
-            },
-          })
-        }
-      >
+      <button onClick={() => setOpenWalletModal(true)}>
         Open Wallet Inventory
       </button>
     </>

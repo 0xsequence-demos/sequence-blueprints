@@ -4,6 +4,7 @@ import { cloudflareDevProxy } from "@react-router/dev/vite/cloudflare";
 import tsconfigPaths from "vite-tsconfig-paths";
 import { getLoadContext } from "./load-context";
 import { envOnlyMacros } from "vite-env-only";
+import { cjsInterop } from "vite-plugin-cjs-interop";
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), "");
@@ -18,12 +19,16 @@ export default defineConfig(({ mode }) => {
       envOnlyMacros(),
       reactRouter(),
       tsconfigPaths(),
+      cjsInterop({
+        dependencies: ["react-copy-to-clipboard"],
+      }),
     ],
     ssr: {
       noExternal: [
-        "@0xsequence/kit",
-        "@0xsequence/kit-wallet",
-        "@0xsequence/kit-checkout",
+        "@0xsequence/connect",
+        "@0xsequence/wallet-widget",
+        "@0xsequence/checkout",
+        "@0xsequence/hooks",
         "use-sound",
       ],
       resolve: {
@@ -31,6 +36,7 @@ export default defineConfig(({ mode }) => {
       },
     },
     optimizeDeps: {
+      include: ["react-copy-to-clipboard"],
       // exclude: ["@0xsequence/kit-checkout"],
     },
     resolve: {
