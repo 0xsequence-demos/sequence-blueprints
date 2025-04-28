@@ -1,8 +1,8 @@
 import { SequenceIndexer } from "@0xsequence/indexer";
 import { useQuery } from "@tanstack/react-query";
 
-import { useMetadataClient } from "@0xsequence/kit";
-import { useIndexerClient } from "@0xsequence/kit";
+import { useMetadataClient } from "@0xsequence/hooks";
+import { useIndexerClient } from "@0xsequence/hooks";
 
 export const time = {
   oneSecond: 1 * 1000,

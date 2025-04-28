@@ -1,5 +1,5 @@
-import { useOpenWalletModal } from "@0xsequence/kit-wallet";
-import { useOpenConnectModal } from "@0xsequence/kit";
+import { useOpenWalletModal } from "@0xsequence/wallet-widget";
+import { useOpenConnectModal } from "@0xsequence/connect";
 import { useAccount } from "wagmi";
 import { WalletConnectionDetail } from "~/components/wallet-connection-detail/WalletConnectionDetail";
 

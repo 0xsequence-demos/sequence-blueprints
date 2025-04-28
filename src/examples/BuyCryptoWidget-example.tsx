@@ -1,6 +1,6 @@
 /* starthide */
-import { useOpenConnectModal } from "@0xsequence/kit";
-import { useAddFundsModal } from "@0xsequence/kit-checkout";
+import { useOpenConnectModal } from "@0xsequence/connect";
+import { useAddFundsModal } from "@0xsequence/checkout";
 import { useAccount } from "wagmi";
 import { WalletConnectionDetail } from "~/components/wallet-connection-detail/WalletConnectionDetail";
 

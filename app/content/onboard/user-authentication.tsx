@@ -1,4 +1,4 @@
-import { useOpenConnectModal } from "@0xsequence/kit";
+import { useOpenConnectModal } from "@0xsequence/connect";
 import { SendTestTransactionWidget } from "~/examples/SendTestTransactionWidget";
 import { SignMessageWidget } from "~/examples/SignMessageWidget";
 import { useAccount } from "wagmi";

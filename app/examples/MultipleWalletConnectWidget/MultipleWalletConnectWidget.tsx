@@ -1,5 +1,5 @@
 /* starthide */
-import { useOpenConnectModal, useKitWallets } from "@0xsequence/kit";
+import { useOpenConnectModal, useWallets } from "@0xsequence/connect";
 import { useMemo } from "react";
 import { useAccount } from "wagmi";
 import { WalletConnectionDetail } from "~/components/wallet-connection-detail/WalletConnectionDetail";
@@ -9,7 +9,7 @@ export const MultipleWalletConnectWidget = () => {
   /* endhide */
   const { setOpenConnectModal } = useOpenConnectModal();
 
-  const { wallets, linkedWallets } = useKitWallets();
+  const { wallets, linkedWallets } = useWallets();
 
   const onClickConnect = () => {
     setOpenConnectModal(true);

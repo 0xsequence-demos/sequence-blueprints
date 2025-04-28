@@ -100,7 +100,7 @@ export const resources: {
       alt: undefined,
     },
     type: "boilerplate",
-    title: "Sequence Kit - NextJS",
+    title: "Web SDK - NextJS",
     links: [
       {
         label: "Demo",
@@ -123,7 +123,7 @@ export const resources: {
       alt: undefined,
     },
     type: "boilerplate",
-    title: "Sequence Kit - React",
+    title: "Web SDK - React",
     links: [
       {
         label: "Demo",
@@ -146,7 +146,7 @@ export const resources: {
       alt: undefined,
     },
     type: "boilerplate",
-    title: "Sequence Kit - Remix + Cloudflare",
+    title: "Web SDK - Remix + Cloudflare",
     links: [
       {
         label: "Demo",
@@ -169,7 +169,7 @@ export const resources: {
       alt: undefined,
     },
     type: "boilerplate",
-    title: "Sequence Kit - Remix + NodeJS",
+    title: "Web SDK - Remix + NodeJS",
     links: [
       {
         label: "Demo",
@@ -215,7 +215,7 @@ export const resources: {
       alt: undefined,
     },
     type: "boilerplate",
-    title: "Kit Universal Wallet",
+    title: "Web SDK Universal Wallet",
     icons: {
       topLeft: "kit",
       topRight: "react",

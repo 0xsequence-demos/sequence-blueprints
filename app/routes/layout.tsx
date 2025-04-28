@@ -4,11 +4,11 @@ import { Icon } from "../components/icon/Icon";
 import Drawer from "~/components/drawer/Drawer";
 import { Fragment } from "react";
 import { useAccount, useDisconnect } from "wagmi";
-import { useOpenConnectModal } from "@0xsequence/kit";
+import { useOpenConnectModal } from "@0xsequence/connect";
 import { Button } from "~/components/button/Button";
 import { useSticky } from "~/components/sticky/useSticky";
 import { AccountPopup } from "boilerplate-design-system";
-import { useOpenWalletModal } from "@0xsequence/kit-wallet";
+import { useOpenWalletModal } from "@0xsequence/wallet-widget";
 import Footer from "~/components/Footer";
 function patchFocusToHandleRecursionError() {
   // handle focus recursion issue with opening wallet inventory
