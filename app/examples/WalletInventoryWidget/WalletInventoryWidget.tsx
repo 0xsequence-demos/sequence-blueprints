@@ -10,7 +10,13 @@ export const WalletInventoryWidget = () => {
   return address ? (
     <>
       <WalletConnectionDetail address={address} />
-      <button onClick={() => setOpenWalletModal(true)}>
+      <button
+        onClick={() =>
+          setOpenWalletModal(true, {
+            defaultNavigation: { location: "search-tokens" },
+          })
+        }
+      >
         Open Wallet Inventory
       </button>
     </>
