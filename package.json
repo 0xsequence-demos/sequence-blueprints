@@ -9,7 +9,7 @@
     "dev": "react-router dev",
     "lint": "eslint ./src",
     "lint:fix": "eslint ./src --fix",
-    "start": "wrangler dev",
+    "start": "wrangler pages dev",
     "typecheck": "react-router typegen && tsc",
     "typegen": "wrangler types",
     "build-examples": "node ./cli/build-code-blocks.js -i ./src/examples",
