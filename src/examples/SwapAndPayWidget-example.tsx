@@ -19,7 +19,7 @@ export const SwapAndPayWidget = (props: Props) => {
     setPending(true);
     const chainId = 137;
     const currencyAddress = "0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359";
-    const currencyAmount = "2000";
+    const currencyAmount = "200000";
 
     const contractAbiInterface = new ethers.Interface(["function demo()"]);
 
@@ -36,8 +36,8 @@ export const SwapAndPayWidget = (props: Props) => {
         props.setData(txHash as `0x${string}`);
       },
       chainId,
-      currencyAddress,
-      currencyAmount,
+      toTokenAddress: currencyAddress,
+      toTokenAmount: currencyAmount,
       postSwapTransactions: [
         {
           to: "0x37470dac8a0255141745906c972e414b1409b470",
