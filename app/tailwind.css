@@ -1,10 +1,211 @@
-@import "./components/components.css";
-@import "./svg.css";
-@import "@0xsequence-demos/boilerplate-design-system/styles/index.css";
+@import 'tailwindcss';
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import './components/components.css';
+@import './svg.css' layer(base);
+@import '@0xsequence-demos/boilerplate-design-system/styles/index.css';
+
+@theme {
+  /* Background gradients */
+  --background-gradient-backdrop: linear-gradient(
+    243.18deg,
+    rgba(86, 52, 189, 0.85) 0%,
+    rgba(49, 41, 223, 0.85) 63.54%,
+    rgba(7, 98, 149, 0.85) 100%
+  );
+  --background-gradient-primary: linear-gradient(89.69deg, #4411E1 0.27%, #7537F9 99.73%);
+  --background-gradient-secondary: linear-gradient(32.51deg, #951990 -15.23%, #3A35B1 48.55%, #20A8B0 100%);
+
+  /* Colors */
+
+  /* bright-purple */
+  --color-bright-purple-50: #f5f5ff;
+  --color-bright-purple-100: #ecebff;
+  --color-bright-purple-200: #dfdbff;
+  --color-bright-purple-300: #cac2ff;
+  --color-bright-purple-400: #b9a3ff;
+  --color-bright-purple-500: #a880ff;
+  --color-bright-purple-600: #9c57ff;
+  --color-bright-purple-700: #7d20fd;
+  --color-bright-purple-800: #5f09dd;
+  --color-bright-purple-900: #4e13af;
+  --color-bright-purple-950: #320c6a;
+
+  /* deep-purple */
+  --color-deep-purple-50: #E4D7F9;
+  --color-deep-purple-100: #D5C1F6;
+  --color-deep-purple-200: #BA98F0;
+  --color-deep-purple-300: #9F70EB;
+  --color-deep-purple-400: #8448E5;
+  --color-deep-purple-500: #6920DF;
+  --color-deep-purple-600: #561AB7;
+  --color-deep-purple-700: #43148F;
+  --color-deep-purple-800: #300F67;
+  --color-deep-purple-900: #1D093E;
+  --color-deep-purple-950: #14062A;
+
+  /* Semantic colors */
+  --color-positive: #1FC266;
+  --color-negative: #C2501F;
+  --color-info: #0076CC;
+  --color-warning: #F4B03E;
+
+  /* Chain colors */
+  --color-arbitrum-dark: #212D44;
+  --color-arbitrum-light: #93D4FF;
+  --color-avalance-dark: #810C0C;
+  --color-avalance-light: #FF8080;
+  --color-bsc-dark: #584508;
+  --color-bsc-light: #FCCF43;
+  --color-ethereum-dark: #132362;
+  --color-ethereum-light: #AABBFF;
+  --color-gnosis-dark: #084246;
+  --color-gnosis-light: #8CF6FD;
+  --color-polygon-dark: #350881;
+  --color-polygon-light: #C7A6FF;
+
+  /* Dark theme text colors */
+  --color-dark-text-100: rgba(255, 255, 255, 1);
+  --color-dark-text-80: rgba(255, 255, 255, 0.8);
+  --color-dark-text-50: rgba(255, 255, 255, 0.5);
+  --color-dark-text-inverse-100: rgba(0, 0, 0, 1);
+
+  /* Dark theme background colors */
+  --color-dark-background-primary: rgba(0, 0, 0, 1);
+  --color-dark-background-secondary: rgba(255, 255, 255, 0.1);
+  --color-dark-background-contrast: rgba(0, 0, 0, 0.5);
+  --color-dark-background-muted: rgba(255, 255, 255, 0.05);
+  --color-dark-background-control: rgba(255, 255, 255, 0.25);
+  --color-dark-background-inverse: rgba(255, 255, 255, 1);
+  --color-dark-background-backdrop: rgba(34, 34, 34, 0.9);
+  --color-dark-background-overlay: rgba(0, 0, 0, 0.7);
+  --color-dark-background-raised: rgba(54, 54, 54, 0.7);
+
+  /* Dark buttons */
+  --color-dark-button-glass: rgba(255, 255, 255, 0.15);
+  --color-dark-button-emphasis: rgba(0, 0, 0, 0.5);
+  --color-dark-button-inverse: rgba(255, 255, 255, 0.8);
+
+  /* Dark borders */
+  --color-dark-border-normal: rgba(255, 255, 255, 0.25);
+  --color-dark-border-focus: rgba(255, 255, 255, 0.5);
+
+  /* Light theme text colors */
+  --color-light-text-100: rgba(0, 0, 0, 1);
+  --color-light-text-80: rgba(0, 0, 0, 0.8);
+  --color-light-text-50: rgba(0, 0, 0, 0.5);
+  --color-light-text-inverse-100: rgba(255, 255, 255, 1);
+
+  /* Light theme background colors */
+  --color-light-background-primary: rgba(244, 244, 244, 1);
+  --color-light-background-secondary: rgba(0, 0, 0, 0.1);
+  --color-light-background-contrast: rgba(244, 244, 244, 0.5);
+  --color-light-background-muted: rgba(0, 0, 0, 0.05);
+  --color-light-background-control: rgba(0, 0, 0, 0.25);
+  --color-light-background-inverse: rgba(0, 0, 0, 1);
+  --color-light-background-backdrop: rgba(221, 221, 221, 0.9);
+  --color-light-background-overlay: rgba(244, 244, 244, 0.7);
+  --color-light-background-raised: rgba(192, 192, 192, 0.7);
+
+  /* Light buttons */
+  --color-light-button-glass: rgba(0, 0, 0, 0.15);
+  --color-light-button-emphasis: rgba(255, 255, 255, 0.5);
+  --color-light-button-inverse: rgba(0, 0, 0, 0.8);
+
+  /* Light borders */
+  --color-light-border-normal: rgba(0, 0, 0, 0.25);
+  --color-light-border-focus: rgba(0, 0, 0, 0.5);
+
+  /* Grey palette */
+  --color-grey-50: #D1D1D1;
+  --color-grey-100: #B0B0B0;
+  --color-grey-200: #888888;
+  --color-grey-300: #6D6D6D;
+  --color-grey-400: #5D5D5D;
+  --color-grey-500: #4F4F4F;
+  --color-grey-600: #454545;
+  --color-grey-700: #3D3D3D;
+  --color-grey-800: #262626;
+  --color-grey-900: #1B1B1B;
+  --color-grey-950: #101010;
+
+  /* Red palette */
+  --color-red-50: #FDF7EF;
+  --color-red-100: #FBECD9;
+  --color-red-200: #F6D7B2;
+  --color-red-300: #F1BB80;
+  --color-red-400: #EA954D;
+  --color-red-500: #E5792A;
+  --color-red-600: #D66020;
+  --color-red-700: #C2501F;
+  --color-red-800: #8E3B1E;
+  --color-red-900: #72331C;
+  --color-red-950: #3E170C;
+
+  /* Green palette */
+  --color-green-50: #F0FDF5;
+  --color-green-100: #DCFCE9;
+  --color-green-200: #BAF8D4;
+  --color-green-300: #85F0B3;
+  --color-green-400: #48E089;
+  --color-green-500: #1FC266;
+  --color-green-600: #14A554;
+  --color-green-700: #148144;
+  --color-green-800: #156639;
+  --color-green-900: #135431;
+  --color-green-950: #042F19;
+
+  /* Yellow palette */
+  --color-yellow-50: #FBFAEB;
+  --color-yellow-100: #F6F2CB;
+  --color-yellow-200: #EFE499;
+  --color-yellow-300: #E5CE5F;
+  --color-yellow-400: #DDB938;
+  --color-yellow-500: #CDA125;
+  --color-yellow-600: #B07E1E;
+  --color-yellow-700: #8D5C1B;
+  --color-yellow-800: #754A1E;
+  --color-yellow-900: #653F1E;
+  --color-yellow-950: #3A200E;
+
+  /* Blue palette */
+  --color-blue-50: #F0F8FF;
+  --color-blue-100: #E0F0FE;
+  --color-blue-200: #B9E0FE;
+  --color-blue-300: #7CC8FD;
+  --color-blue-400: #36AEFA;
+  --color-blue-500: #0C94EB;
+  --color-blue-600: #0076CC;
+  --color-blue-700: #015CA3;
+  --color-blue-800: #064F86;
+  --color-blue-900: #0B426F;
+  --color-blue-950: #072A4A;
+
+  /* Indigo palette */
+  --color-indigo-50: #F2F2FF;
+  --color-indigo-100: #E9E7FF;
+  --color-indigo-200: #D3D1FF;
+  --color-indigo-300: #B3ADFF;
+  --color-indigo-400: #8E7EFF;
+  --color-indigo-500: #6A4AFF;
+  --color-indigo-600: #5826FF;
+  --color-indigo-700: #4411E1;
+  --color-indigo-800: #3D10C7;
+  --color-indigo-900: #340FA3;
+  --color-indigo-950: #1C066F;
+
+  /* Violet palette */
+  --color-violet-50: #F3F2FF;
+  --color-violet-100: #EBE8FF;
+  --color-violet-200: #D9D3FF;
+  --color-violet-300: #BDB0FF;
+  --color-violet-400: #9D84FF;
+  --color-violet-500: #7F52FF;
+  --color-violet-600: #7537F9;
+  --color-violet-700: #601CE5;
+  --color-violet-800: #5117C0;
+  --color-violet-900: #43159D;
+  --color-violet-950: #270A6B;
+}
 
 @layer base {
   html,
@@ -21,29 +222,6 @@
   }
 
   body {
-    background-image: linear-gradient(
-        to bottom,
-        theme(colors.black) 4.25rem,
-
-        theme(colors.black/0%) 25%
-      ),
-      linear-gradient(
-        to bottom,
-        theme(colors.deep-purple.950/10%) 50%,
-        theme(colors.deep-purple.950/100%)
-      ),
-      linear-gradient(
-        to right,
-        theme(colors.deep-purple.950),
-        theme(colors.deep-purple.950/0%) 10%,
-        theme(colors.deep-purple.950/0%) 90%,
-        theme(colors.deep-purple.950)
-      ),
-      image-set(
-        url("/images/bg-body@2x.webp") type("image/webp"),
-        url("/images/bg-body@2x.png") type("image/png")
-      );
-
     background-attachment: fixed;
     background-size: 2280px 820px;
     background-position: top center;
@@ -52,32 +230,40 @@
 }
 
 @layer components {
-  .book-content {
-    h2 {
-      @apply text-18 md:text-24 font-bold tracking-[-2%];
-    }
-    h3 {
-      @apply text-16 md:text-18 font-semibold;
-    }
-  }
+    .bg-body-complex {
+    background-image: linear-gradient(to bottom, #000 4.25rem, #0000 25%), 
+                  linear-gradient(to bottom, #14062a1a 50%, #14062a), 
+                  linear-gradient(to right, #14062a, #14062a00 10%, #14062a00 90%, #14062a), 
+                  image-set(
+                    url(/images/bg-body@2x.webp) type("image/webp"), 
+                    url(/images/bg-body@2x.png) type("image/png")
+                  );
 
+  }
+  /* .book-content h2 {
+    @apply text-18 md:text-24 font-bold tracking-[-2%];
+  }
+  .book-content h3 {
+    @apply text-16 md:text-18 font-semibold;
+  }
+  
   [data-component="menuPopoverButton"] {
     @apply text-14 gap-2 px-2 py-1.5 hover:bg-white/10 bg-white/15 rounded-full border-none pr-3;
-  }
+  } */
 }
 
-@layer components {
+/* @layer components { */
   /* [data-collapsed="true"] {
     @apply hidden;
     display: none;
     line-height: 0;
   } */
-  .prose {
-    @apply max-w-[32rem];
+  /* .prose {
+    @apply max-w-lg;
     & > * {
       @apply mb-4;
     }
     p {
     }
   }
-}
+} */

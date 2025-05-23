@@ -1,8 +1,6 @@
-@layer utilities {
-  .playcard {
-    width: 100%;
-  }
-  .playcard pre {
+@utility playcard {
+  width: 100%;
+  & pre {
     width: 100%;
     overflow: hidden;
   }

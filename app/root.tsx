@@ -37,7 +37,7 @@ import { SequenceCheckoutProvider } from "@0xsequence/checkout";
 import { WindowController } from "~/components/window-controller/WindowController";
 import { WindowRoot } from "~/components/window-controller/WindowRoot";
 import { WindowPortal } from "~/components/window-controller/WindowPortal";
-import dsbStyles from "boilerplate-design-system/styles/index.css?url";
+import dsbStyles from "@0xsequence-demos/boilerplate-design-system/styles/index.css?url";
 import { ChainId } from "@0xsequence/network";
 import type { SdkConfig } from '@0xsequence/marketplace-sdk';
 import {
@@ -127,7 +127,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Meta />
         <Links />
       </head>
-      <body className="flex flex-col flex-1 bg-deep-purple-950">
+      <body className="flex flex-col flex-1 bg-deep-purple-950 bg-body-complex">
         <SkipAhead>Skip to content</SkipAhead>
         {children}
         <ScrollRestoration nonce={nonce} />
