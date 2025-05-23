@@ -1,6 +1,6 @@
 @import "./components/components.css";
 @import "./svg.css";
-@import "boilerplate-design-system/styles/index.css";
+@import "@0xsequence-demos/boilerplate-design-system/styles/index.css";
 
 @tailwind base;
 @tailwind components;

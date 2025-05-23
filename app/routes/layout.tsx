@@ -7,7 +7,7 @@ import { useAccount, useDisconnect } from "wagmi";
 import { useOpenConnectModal } from "@0xsequence/connect";
 import { Button } from "~/components/button/Button";
 import { useSticky } from "~/components/sticky/useSticky";
-import { AccountPopup } from "boilerplate-design-system";
+import { AccountPopup } from "@0xsequence-demos/boilerplate-design-system";
 import { useOpenWalletModal } from "@0xsequence/wallet-widget";
 import Footer from "~/components/Footer";
 function patchFocusToHandleRecursionError() {

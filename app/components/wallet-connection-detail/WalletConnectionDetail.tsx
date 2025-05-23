@@ -1,4 +1,4 @@
-import { GradientAvatar, shortAddress } from "boilerplate-design-system";
+import { GradientAvatar, shortAddress } from "@0xsequence-demos/boilerplate-design-system";
 
 export function WalletConnectionDetail({
   address,

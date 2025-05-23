@@ -39,6 +39,11 @@ import { WindowRoot } from "~/components/window-controller/WindowRoot";
 import { WindowPortal } from "~/components/window-controller/WindowPortal";
 import dsbStyles from "boilerplate-design-system/styles/index.css?url";
 import { ChainId } from "@0xsequence/network";
+import type { SdkConfig } from '@0xsequence/marketplace-sdk';
+import {
+  MarketplaceProvider,
+  ModalProvider,
+} from "@0xsequence/marketplace-sdk/react";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: dsbStyles },
@@ -90,6 +95,7 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
   }
 
   return {
+    projectId: env.PROJECT_ID,
     projectAccessKey: env.PROJECT_ACCESS_KEY,
     waasConfigKey: env.WAAS_CONFIG_KEY,
     googleClientId: env.GOOGLE_CLIENT_ID,
@@ -176,12 +182,18 @@ export function useConfig() {
 }
 
 export default function App() {
-  const { projectAccessKey, initialState } = useLoaderData<typeof loader>();
+  const { projectAccessKey, projectId, walletConnectProjectId, initialState } = useLoaderData<typeof loader>();
   const [config] = useConfig();
   const [queryClient] = useState(() => new QueryClient());
   const kitConfig = {
     projectAccessKey,
   };
+
+  const marketplaceSdk = {
+    projectId,
+    projectAccessKey,
+    walletConnectProjectId,
+  } satisfies SdkConfig;
 
   return (
     <WagmiProvider config={config} initialState={initialState}>
@@ -189,10 +201,13 @@ export default function App() {
         <SequenceConnectProvider config={kitConfig}>
           <SequenceWalletProvider>
             <SequenceCheckoutProvider>
-              <WindowController>
-                <WindowRoot />
-                <WindowPortal />
-              </WindowController>
+              <MarketplaceProvider config={marketplaceSdk}>
+                <WindowController>
+                  <WindowRoot />
+                  <WindowPortal />
+                </WindowController>
+                <ModalProvider />
+              </MarketplaceProvider>
             </SequenceCheckoutProvider>
           </SequenceWalletProvider>
         </SequenceConnectProvider>

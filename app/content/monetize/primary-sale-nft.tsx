@@ -11,7 +11,7 @@ import { NFT_TOKEN_CONTRACT_ABI } from "~/utils/primary-sales/abis/nftTokenContr
 import { ItemsForSale } from "~/components/items-for-sale/ItemsForSale";
 import { Link } from "react-router";
 import { useState } from "react";
-import { Divider } from "boilerplate-design-system";
+import { Divider } from "@0xsequence-demos/boilerplate-design-system";
 import { CopyToClipboardButton } from "../../components/copy-to-clipboard-button/CopyToClipboardButton";
 
 export const formatPriceWithDecimals = (
