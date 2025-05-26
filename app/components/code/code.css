@@ -1,6 +1,6 @@
 .shiki,
 .shiki-magic-move-container {
-  @apply p-3 sm:p-6 overflow-x-scroll max-w-full text-11 sm:text-13 !bg-transparent;
+  @apply p-3 sm:p-6 overflow-x-scroll max-w-full text-11 sm:text-13 bg-transparent!;
 
   line-height: 2em;
 }
