@@ -29,6 +29,7 @@ export default defineConfig(({ mode }) => {
         "@0xsequence/wallet-widget",
         "@0xsequence/checkout",
         "@0xsequence/hooks",
+        "@0xsequence/marketplace-sdk",
         "use-sound",
       ],
       resolve: {
