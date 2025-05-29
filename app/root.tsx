@@ -44,6 +44,7 @@ import {
   MarketplaceProvider,
   ModalProvider,
 } from "@0xsequence/marketplace-sdk/react";
+import { ThemeProvider } from "@0xsequence/design-system";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: dsbStyles },
@@ -196,22 +197,24 @@ export default function App() {
   } satisfies SdkConfig;
 
   return (
-    <WagmiProvider config={config} initialState={initialState}>
-      <QueryClientProvider client={queryClient}>
-        <SequenceConnectProvider config={kitConfig}>
-          <SequenceWalletProvider>
-            <SequenceCheckoutProvider>
-              <MarketplaceProvider config={marketplaceSdk}>
-                <WindowController>
-                  <WindowRoot />
-                  <WindowPortal />
-                </WindowController>
-                <ModalProvider />
-              </MarketplaceProvider>
-            </SequenceCheckoutProvider>
-          </SequenceWalletProvider>
-        </SequenceConnectProvider>
-      </QueryClientProvider>
-    </WagmiProvider>
+    <ThemeProvider>
+      <WagmiProvider config={config} initialState={initialState}>
+        <QueryClientProvider client={queryClient}>
+          <SequenceConnectProvider config={kitConfig}>
+            <SequenceWalletProvider>
+              <SequenceCheckoutProvider>
+                <MarketplaceProvider config={marketplaceSdk}>
+                  <WindowController>
+                    <WindowRoot />
+                    <WindowPortal />
+                  </WindowController>
+                  <ModalProvider />
+                </MarketplaceProvider>
+              </SequenceCheckoutProvider>
+            </SequenceWalletProvider>
+          </SequenceConnectProvider>
+        </QueryClientProvider>
+      </WagmiProvider>
+    </ThemeProvider>
   );
 }

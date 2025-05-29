@@ -8,11 +8,11 @@ import { useSalesCurrency } from "~/hooks/useSalesCurrency";
 import { saleConfiguration } from "~/utils/primary-sales/helpers";
 import { ERC20_ABI } from "~/utils/primary-sales/ERC20/ERC20_abi";
 import { NFT_TOKEN_CONTRACT_ABI } from "~/utils/primary-sales/abis/nftTokenContractAbi";
-import { ItemsForSale } from "~/components/items-for-sale/ItemsForSale";
 import { Link } from "react-router";
 import { useState } from "react";
 import { Divider } from "@0xsequence-demos/boilerplate-design-system";
 import { CopyToClipboardButton } from "../../components/copy-to-clipboard-button/CopyToClipboardButton";
+import { SecondarySales } from "~/components/secondary-sales.tsx/SecondarySales";
 
 export const formatPriceWithDecimals = (
 	price: bigint,
@@ -114,12 +114,11 @@ function component() {
 	return (
 		<>
 			<div className="py-8 prose">
-				<h2>Buy an NFT from a primary sale</h2>
+				<h2>Buy an NFT from a secondary sale</h2>
 				<p>
-					Primary sales for NFTs let you ask for the support your project needs
-					from your community, while securely minting NFTs in return.
+					Secondary sales for NFTs allow your users to trade with each other.
 				</p>
-				<p>When your NFT sale opens, your users can buy your NFTs</p>
+				<p>When users list their NFTs for sale, others can buy them — enabling peer-to-peer trading</p>
 				<span>
 					<Link
 						className="underline"
@@ -150,19 +149,7 @@ function component() {
 					}
 				>
 					{userAddress ? (
-						// <ItemsForSale
-						// 	chainId={saleConfiguration.chainId}
-						// 	collectionAddress={saleConfiguration.nftTokenAddress}
-						// 	userPaymentCurrencyBalance={userPaymentCurrencyBalance}
-						// 	price={price}
-						// 	currencyDecimals={currencyDecimals}
-						// 	currencyData={currencyData}
-						// 	currencyIsLoading={currencyDataIsLoading}
-						// 	saleConfiguration={saleConfiguration}
-						// 	refetchTotalMinted={refetchTotalMinted}
-						// 	setSomethingBought={setSomethingBought}
-						// />
-						<></>
+						<SecondarySales />
 					) : (
 						<AuthenticationWidget />
 					)}
@@ -176,8 +163,7 @@ function component() {
 			</PlayCard>
 			<Resources
 				items={[
-					"primary-sale-1155-boilerplate",
-					"primary-drop-sale-721-boilerplate"
+					"marketplace-hooks-boilerplate"
 				]}
 			/>
 		</>

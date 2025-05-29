@@ -1,50 +1,53 @@
 import { Image } from "@0xsequence-demos/boilerplate-design-system";
 import type {
   CurrencyData,
-  ShowBuyModalArgs,
-  ShowMakeOfferModalArgs,
-} from "../../utils/types";
+  ShowCreateListingModalArgs,
+  ShowSellModalArgs,
+} from "../types";
 import type {
   CollectibleOrder,
-  MarketplaceKind,
   OrderbookKind,
 } from "@0xsequence/marketplace-sdk";
+import { useBalanceOfCollectible } from "@0xsequence/marketplace-sdk/react";
 import type { Address } from "viem";
 
-export const Collectible = ({
+export const UserInventoryCollectible = ({
   collectible,
   chainId,
   collectionAddress,
-  showBuyModal,
-  showOfferModal,
+  showListModal,
+  showSellModal,
   address,
   isConnected,
   orderbookKind,
-  priceCurrencyData,
+  offerPriceCurrencyData,
 }: {
   collectible: CollectibleOrder;
   chainId: string;
   collectionAddress: Address;
-  showBuyModal: (args: ShowBuyModalArgs) => void;
-  showOfferModal: (args: ShowMakeOfferModalArgs) => void;
+  showListModal: (args: ShowCreateListingModalArgs) => void;
+  showSellModal: (args: ShowSellModalArgs) => void;
   address?: Address;
   isConnected: boolean;
   orderbookKind: OrderbookKind;
-  priceCurrencyData: CurrencyData | null;
+  offerPriceCurrencyData: CurrencyData | null;
 }) => {
   const { name, image, tokenId } = collectible.metadata;
 
-  const onClickBuy = () =>
-    showBuyModal({
-      chainId: Number(chainId),
-      collectionAddress,
-      collectibleId: tokenId,
-      orderId: collectible!.order!.orderId,
-      marketplace: orderbookKind as unknown as MarketplaceKind,
-    });
+  const { data: userBalanceResp } = useBalanceOfCollectible({
+    chainId: Number(chainId),
+    collectionAddress,
+    collectableId: tokenId,
+    userAddress: address,
+    query: {
+      enabled: !!isConnected && !!address,
+    },
+  });
 
-  const onClickOffer = () => {
-    showOfferModal({
+  const tokenBalance = userBalanceResp?.balance;
+
+  const onClickList = () => {
+    showListModal({
       collectionAddress,
       chainId: Number(chainId),
       collectibleId: tokenId,
@@ -52,6 +55,17 @@ export const Collectible = ({
     });
   };
 
+  const onAcceptOffer = () => {
+    showSellModal({
+      collectionAddress,
+      chainId: Number(chainId),
+      tokenId,
+      order: collectible!.offer!,
+    });
+  };
+
+  const hasOffer = Boolean(collectible?.offer);
+  const sellDisabled = !isConnected || !hasOffer || !tokenBalance;
   const showActionButtons = address && isConnected;
 
   return (
@@ -77,25 +91,33 @@ export const Collectible = ({
             </dt>
             <dd className="text-white font-bold text-14">{tokenId || ""}</dd>
           </div>
+          <div className="flex flex-col text-end items-end">
+            <dt className="text-11 font-medium text-grey-200 leading-[1em]">
+              Owned
+            </dt>
+            <dd className="text-white font-bold text-14">{tokenBalance}</dd>
+          </div>
         </dl>
       </div>
       {showActionButtons && (
         <div className="flex flex-col gap-2">
-          {collectible.order && (
+          {tokenBalance && (
             <button
               className="py-3 px-3 border border-transparent bg-[linear-gradient(to_left,_#7537f9,_#5826ff)] rounded-[0.5rem] min-w-[50px] font-bold text-14 cursor-pointer"
-              onClick={onClickBuy}
+              onClick={onClickList}
             >
-              Buy now for {collectible.order.priceAmountFormatted}{" "}
-              {priceCurrencyData?.symbol || "unknown"}
+              List for Sale
             </button>
           )}
-          <button
-            className="py-3 px-3 border border-transparent bg-[linear-gradient(to_left,_#7537f9,_#5826ff)] rounded-[0.5rem] min-w-[50px] font-bold text-14 cursor-pointer"
-            onClick={onClickOffer}
-          >
-            Make offer
-          </button>
+          {!sellDisabled && (
+            <button
+              className="py-3 px-3 border border-transparent bg-[linear-gradient(to_left,_#7537f9,_#5826ff)] rounded-[0.5rem] min-w-[50px] font-bold text-14 cursor-pointer"
+              onClick={onAcceptOffer}
+            >
+              Sell Now for {collectible.offer?.priceAmountFormatted}{" "}
+              {offerPriceCurrencyData?.symbol || "unknown"}
+            </button>
+          )}
         </div>
       )}
     </div>
