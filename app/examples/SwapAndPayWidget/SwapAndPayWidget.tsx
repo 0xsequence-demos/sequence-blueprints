@@ -48,8 +48,6 @@ export const SwapAndPayWidget = (props: Props) => {
       description: "Select a token in your wallet to swap to 0.2 USDC.",
     };
 
-    console.log("swapModalSettings", swapModalSettings);
-
     openSwapModal(swapModalSettings);
   };
   /* starthide */

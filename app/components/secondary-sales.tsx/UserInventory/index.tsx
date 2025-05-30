@@ -1,7 +1,6 @@
 import { OrderbookKind, OrderSide } from "@0xsequence/marketplace-sdk";
 import {
   useCreateListingModal,
-  useListCollectibles,
   useListCollectiblesPaginated,
   useMarketCurrencies,
   useMarketplaceConfig,
@@ -11,7 +10,6 @@ import type { Address } from "viem";
 import { useAccount } from "wagmi";
 import { UserInventoryCollectible } from "./UserInventoryCollectible";
 import { useState } from "react";
-import { Button } from "~/components/button/Button";
 import { PaginationBtns } from "../components/PaginationBtns";
 import { CollectableSkeleton } from "~/components/collectable/CollectableSkeleton";
 
