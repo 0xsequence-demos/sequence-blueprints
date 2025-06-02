@@ -65,6 +65,10 @@ function component() {
     setTab(newTab);
   }
 
+  const switchTabButtonContent = isSecondarySalesTabEnabled
+    ? "Switch To Inventory"
+    : "Switch To Secondary Sales";
+
   return (
     <>
       <div className="py-8 prose">
@@ -102,22 +106,21 @@ function component() {
       <PlayCard>
         <PlayCard.Preview
           botMood={
-            // !userAddress ? "dead" : somethingBought ? "happy" : "neutral"
             !userAddress ? "dead" : "neutral"
           }
         >
           {userAddress ? (
-            <>
-              <button
-                className="py-3 px-3 border border-transparent bg-[linear-gradient(to_left,_#7537f9,_#5826ff)] rounded-[0.5rem] min-w-[50px] font-bold text-14 cursor-pointer"
-                onClick={onChangeTab}
-              >
-                {isSecondarySalesTabEnabled
-                  ? "Switch To Inventory"
-                  : "Switch To Secondary Sales"}
-              </button>
+            <div className="flex flex-col gap-6">
+              <div className="flex justify-center">
+                <button
+                  className="py-3 px-3 border border-transparent bg-[linear-gradient(to_left,_#7537f9,_#5826ff)] rounded-[0.5rem] min-w-[50px] font-bold text-14 cursor-pointer"
+                  onClick={onChangeTab}
+                >
+                  {switchTabButtonContent}
+                </button>
+              </div>
               <SecondarySales currentTab={tab} />
-            </>
+            </div>
           ) : (
             <AuthenticationWidget />
           )}
