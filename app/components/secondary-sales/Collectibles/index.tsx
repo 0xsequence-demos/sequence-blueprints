@@ -1,19 +1,19 @@
 import { OrderbookKind, OrderSide } from "@0xsequence/marketplace-sdk";
 import {
-  useCreateListingModal,
-  useListCollectiblesPaginated,
+  useBuyModal,
   useMarketCurrencies,
+  useMakeOfferModal,
   useMarketplaceConfig,
-  useSellModal,
+  useListCollectiblesPaginated,
 } from "@0xsequence/marketplace-sdk/react";
+import { Collectible } from "./Collectible";
 import type { Address } from "viem";
 import { useAccount } from "wagmi";
-import { UserInventoryCollectible } from "./UserInventoryCollectible";
 import { useState } from "react";
 import { PaginationBtns } from "../components/PaginationBtns";
-import { CollectableSkeleton } from "~/components/collectable/CollectableSkeleton";
+import { CollectableSkeleton } from "../components/CollectableSkeleton";
 
-export const UserInventory = ({
+export const Collectibles = ({
   collectionId,
   chainId,
 }: {
@@ -22,6 +22,7 @@ export const UserInventory = ({
 }) => {
   const [page, setPage] = useState(1);
   const { address, isConnected } = useAccount();
+
   const {
     data: collectibles,
     isLoading: isLoadingCollectibles,
@@ -32,16 +33,14 @@ export const UserInventory = ({
     filter: {
       // # Optional filters
       includeEmpty: true,
-      inAccounts: [address!],
       // searchText: text,
       // properties,
     },
-    side: OrderSide.listing,
     query: {
-      enabled: !!address,
       pageSize: 1,
       page,
     },
+    side: OrderSide.listing,
   });
 
   const { data } = useMarketplaceConfig();
@@ -50,25 +49,30 @@ export const UserInventory = ({
     console.error(error.message);
   };
 
-  const showSellModalOnSuccess = ({ hash }: { hash?: `0x${string}` }) => {
+  const showBuyModalOnSuccess = ({ hash }: { hash?: `0x${string}` }) => {
+    console.log("Buy transaction sent with hash: ", hash);
     if (hash)
       setTimeout(() => {
         refetchCollectibles();
       }, 3000);
   };
 
-  const { show: showListModal } = useCreateListingModal({ onError });
-  const { show: showSellModal } = useSellModal({
+  const { show: showBuyModal } = useBuyModal({
+    onSuccess: showBuyModalOnSuccess,
     onError,
-    onSuccess: showSellModalOnSuccess,
   });
 
-  const collectiblesFlat = collectibles?.collectibles ?? [];
+  const { show: showOfferModal } = useMakeOfferModal({
+    onError,
+  });
+
+  const collectiblesFlat = collectibles?.collectibles || [];
   const hasMorePages = !!collectibles?.page?.more;
   const collectionData =
-    data?.market?.collections.find(
+    data?.market?.collections?.find(
       (collection) => collection.itemsAddress === collectionId
     ) || null;
+
   const { data: currenciesData } = useMarketCurrencies({
     chainId: collectionData?.chainId || NaN,
     collectionAddress: collectionData?.itemsAddress as Address,
@@ -77,41 +81,42 @@ export const UserInventory = ({
       enabled: !!collectionData?.chainId && !!collectionData?.itemsAddress,
     },
   });
+
   const orderbookKind: OrderbookKind =
     (collectionData?.destinationMarketplace || "") as unknown as OrderbookKind;
 
   return (
     <div className="flex flex-col gap-4">
-      <h1 className="text-[32px] font-semibold">Your Items</h1>
+      <h1 className="text-[32px] font-semibold">Collectibles</h1>
       {isLoadingCollectibles ? (
         <div className="flex flex-wrap gap-6 justify-center">
           <CollectableSkeleton />
         </div>
       ) : (
         <div className="flex flex-wrap gap-6 justify-center">
+          {/* Agregar tab para inventario del usuario. */}
           {collectiblesFlat?.map((collectible) => (
-            <UserInventoryCollectible
+            <Collectible
               key={collectible.metadata.tokenId}
               collectible={collectible}
               chainId={String(chainId)}
               collectionAddress={collectionId}
-              showListModal={showListModal}
-              showSellModal={showSellModal}
+              showBuyModal={showBuyModal}
+              showOfferModal={showOfferModal}
               address={address}
               isConnected={isConnected}
               orderbookKind={orderbookKind}
-              offerPriceCurrencyData={
+              priceCurrencyData={
                 currenciesData?.find(
                   (currency) =>
                     currency.contractAddress ===
-                    collectible.offer?.priceCurrencyAddress
+                    collectible.order?.priceCurrencyAddress
                 ) || null
               }
             />
           ))}
         </div>
       )}
-
       <PaginationBtns
         onChangePage={setPage}
         currentPage={page}

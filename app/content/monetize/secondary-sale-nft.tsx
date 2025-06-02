@@ -6,7 +6,7 @@ import { Resources } from "~/components/resources/Resources";
 import { Link } from "react-router";
 import { useState } from "react";
 import { CopyToClipboardButton } from "../../components/copy-to-clipboard-button/CopyToClipboardButton";
-import { SecondarySales } from "~/components/secondary-sales.tsx/SecondarySales";
+import { SecondarySales } from "~/components/secondary-sales/SecondarySales";
 import { SecondarySalesWidget } from "~/examples/SecondarySalesWidget";
 
 export const formatPriceWithDecimals = (
@@ -124,7 +124,6 @@ function component() {
           ) : (
             <AuthenticationWidget />
           )}
-          {/* </Group> */}
         </PlayCard.Preview>
 
         {isSecondarySalesTabEnabled && (
