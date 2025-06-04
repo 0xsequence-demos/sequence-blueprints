@@ -43,7 +43,7 @@
     "@tanstack/react-query": "^5.75.4",
     "@tanstack/react-query-devtools": "^5.76.1",
     "clsx": "^2.1.1",
-    "date-fns": "2.30.0",
+    "date-fns": "4.1.0",
     "ethers": "^6.13.0",
     "framer-motion": "^12.12.1",
     "isbot": "^5.1.21",
@@ -57,8 +57,7 @@
     "react-dom": "^19.1.0",
     "react-router": "^7.1.5",
     "react-router-dom": "^7.1.5",
-    "remix-flat-routes": "^0.6.5",
-    "remix-utils": "^8.0.0",
+    "remix-utils": "^8.7.0",
     "shiki-magic-move": "^0.5.2",
     "sonner": "^1.7.0",
     "three": "^0.173.0",
@@ -112,7 +111,7 @@
     "vite": "^5.4.7",
     "vite-env-only": "^3.0.3",
     "vite-plugin-cjs-interop": "^2.2.0",
-    "wrangler": "4.13.2"
+    "wrangler": "4.19.1"
   },
   "engines": {
     "node": ">=20.0.0"
