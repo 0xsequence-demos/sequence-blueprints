@@ -4,7 +4,7 @@
   "sideEffects": false,
   "type": "module",
   "scripts": {
-    "build": "react-router build",
+    "build": "NODE_OPTIONS=\"--max-old-space-size=4096\" react-router build",
     "deploy": "wrangler deploy",
     "dev": "react-router dev",
     "lint": "eslint ./src",
