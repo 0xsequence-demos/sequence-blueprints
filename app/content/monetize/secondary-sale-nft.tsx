@@ -1,15 +1,15 @@
 import { SecondarySalesInventoryWidget } from "~/examples/SecondarySalesInventoryWidget";
-import { useAccount, useReadContract } from "wagmi";
+import { useAccount } from "wagmi";
 import { AuthenticationWidget } from "~/examples/AuthenticationWidget";
 import { PlayCard } from "../../components/playcard/PlayCard";
 import { Resources } from "~/components/resources/Resources";
 import { Link } from "react-router";
-import { useState } from "react";
 import { CopyToClipboardButton } from "../../components/copy-to-clipboard-button/CopyToClipboardButton";
 import { SecondarySalesWidget } from "~/examples/SecondarySalesWidget";
 import { Divide } from "~/components/divide/Divide";
 import { Collectibles } from "~/components/secondary-sales/Collectibles";
 import { UserInventory } from "~/components/secondary-sales/UserInventory";
+
 export const formatPriceWithDecimals = (
   price: bigint,
   tokenDecimals: number
@@ -45,11 +45,6 @@ const info = {
   description:
     "Allow users to purchase NFTs through peer-to-peer transactions!",
 } as const;
-
-enum Tabs {
-  secondarySales = "secondary-sales",
-  inventory = "inventory",
-}
 
 const chainId = 421614;
 const collectionId = "0x36631c1e690714192614364ae9629850b546d194";

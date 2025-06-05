@@ -1,23 +1,19 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 /* starthide */
-import {
-  CollectibleOrder,
-  OrderbookKind,
-  OrderSide,
-} from "@0xsequence/marketplace-sdk";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useAccount } from "wagmi";
 import {
   useBalanceOfCollectible,
-  useCreateListingModal,
   useListCollectiblesPaginated,
-  useMarketCurrencies,
   useMarketplaceConfig,
+  useMarketCurrencies,
+  useCreateListingModal,
   useSellModal,
 } from "@0xsequence/marketplace-sdk/react";
+import { OrderSide, OrderbookKind } from "@0xsequence/marketplace-sdk";
 import type { Address } from "viem";
-import { useAccount } from "wagmi";
 import { Image } from "@0xsequence-demos/boilerplate-design-system";
-
 /* endhide */
+
 export const SecondarySalesInventoryWidget = ({
   collectionId,
   chainId,
@@ -25,220 +21,148 @@ export const SecondarySalesInventoryWidget = ({
   collectionId: Address;
   chainId: number;
 }) => {
+  /* starthide */
   const { address, isConnected } = useAccount();
-
-  const {
-    data: collectibles,
-    isLoading: isLoadingCollectibles,
-    refetch: refetchCollectibles,
-  } = useListCollectiblesPaginated({
-    /* starthide */
-    chainId: Number(chainId),
+  /* endhide */
+  const { data: collectiblesData } = useListCollectiblesPaginated({
+    chainId,
     collectionAddress: collectionId,
-    filter: {
-      includeEmpty: true,
-      inAccounts: [address!],
-    },
+    filter: { includeEmpty: true, inAccounts: [address!] },
     side: OrderSide.listing,
-    query: {
-      enabled: !!address,
-      pageSize: 5,
-      page: 1,
-    },
-    /* endhide */
+    query: { enabled: !!address, pageSize: 5, page: 1 },
   });
 
-  const { data } = useMarketplaceConfig();
+  const { show: showListModal } = useCreateListingModal();
+  const { show: showSellModal } = useSellModal();
 
-  const onError = (error: Error) => {
-    console.error(error.message);
-  };
+  const { data: config } = useMarketplaceConfig();
+  /* starthide */
+  const collection = config?.market?.collections.find(
+    (c) => c.itemsAddress === collectionId,
+  );
+  /* endhide */
 
-  const showSellModalOnSuccess = ({ hash }: { hash?: `0x${string}` }) => {
-    if (hash)
-      setTimeout(() => {
-        refetchCollectibles();
-      }, 3000);
-  };
-
-  const { show: showListModal } = useCreateListingModal({
+  const { data: currencies } = useMarketCurrencies({
     /* starthide */
-    onError,
-    /* endhide */
-  });
-
-  const { show: showSellModal } = useSellModal({
-    /* starthide */
-    onError,
-    onSuccess: showSellModalOnSuccess,
-    /* endhide */
-  });
-
-  const collectiblesFlat = collectibles?.collectibles ?? [];
-
-  const collectionData =
-    data?.market?.collections.find(
-      (collection) => collection.itemsAddress === collectionId,
-    ) || null;
-
-  const { data: currenciesData } = useMarketCurrencies({
-    /* starthide */
-    chainId: collectionData?.chainId || NaN,
-    collectionAddress: collectionData?.itemsAddress as Address,
+    chainId: collection?.chainId || NaN,
+    collectionAddress: collection?.itemsAddress as Address,
     includeNativeCurrency: true,
-    query: {
-      enabled: !!collectionData?.chainId && !!collectionData?.itemsAddress,
-    },
+    query: { enabled: !!collection },
     /* endhide */
   });
 
-  const orderbookKind: OrderbookKind =
-    (collectionData?.destinationMarketplace || "") as unknown as OrderbookKind;
+  /* starthide */
+  const orderbookKind = collection?.destinationMarketplace as OrderbookKind;
+  /* endhide */
+
+  /* starthide */
+  const collectibles = collectiblesData?.collectibles ?? [];
+  /* endhide */
 
   return (
     <div className="flex flex-col gap-4">
       <h1 className="text-[32px] font-semibold">Your Items</h1>
-      {isLoadingCollectibles ? (
-        <div className="flex flex-wrap gap-6 justify-center">Loading...</div>
-      ) : (
-        <div className="flex flex-wrap gap-6 justify-center">
-          {collectiblesFlat?.map((collectible) => (
-            <UserInventoryCollectible
-              key={collectible.metadata.tokenId}
-              collectible={collectible}
-              chainId={String(chainId)}
-              collectionAddress={collectionId}
-              showListModal={showListModal}
-              showSellModal={showSellModal}
-              address={address}
-              isConnected={isConnected}
-              orderbookKind={orderbookKind}
-              offerPriceCurrencyData={
-                currenciesData?.find(
-                  (currency) =>
-                    currency.contractAddress ===
-                    collectible.offer?.priceCurrencyAddress,
-                ) || null
-              }
-            />
-          ))}
-        </div>
-      )}
+      <div className="flex flex-wrap gap-6 justify-center">
+        {collectibles.map((c) => (
+          <UserInventoryCollectible
+            key={c.metadata.tokenId}
+            collectible={c}
+            chainId={chainId}
+            collectionAddress={collectionId}
+            address={address}
+            isConnected={isConnected}
+            orderbookKind={orderbookKind}
+            showListModal={showListModal}
+            showSellModal={showSellModal}
+            offerCurrency={
+              currencies?.find(
+                (cur) => cur.contractAddress === c.offer?.priceCurrencyAddress,
+              ) || null
+            }
+          />
+        ))}
+      </div>
     </div>
   );
 };
 
+/* starthide */
 const UserInventoryCollectible = ({
   collectible,
   chainId,
   collectionAddress,
-  showListModal,
-  showSellModal,
   address,
   isConnected,
   orderbookKind,
-  offerPriceCurrencyData,
+  showListModal,
+  showSellModal,
+  offerCurrency,
 }: {
-  collectible: CollectibleOrder;
-  chainId: string;
+  collectible: any;
+  chainId: number;
   collectionAddress: Address;
-  showListModal: any;
-  showSellModal: any;
   address?: Address;
   isConnected: boolean;
   orderbookKind: OrderbookKind;
-  offerPriceCurrencyData: any;
+  showListModal: any;
+  showSellModal: any;
+  offerCurrency: any;
 }) => {
-  const { name, image, tokenId } = collectible.metadata;
+  const tokenId = collectible.metadata.tokenId;
+  const { name, image } = collectible.metadata;
 
-  const { data: userBalanceResp } = useBalanceOfCollectible({
-    /* starthide */
-    chainId: Number(chainId),
+  const { data } = useBalanceOfCollectible({
+    chainId,
     collectionAddress,
     collectableId: tokenId,
     userAddress: address,
-    query: {
-      enabled: !!isConnected && !!address,
-    },
-    /* endhide */
+    query: { enabled: !!isConnected && !!address },
   });
 
-  const tokenBalance = userBalanceResp?.balance;
-
-  const onClickList = () => {
-    showListModal({
-      /* starthide */
-      collectionAddress,
-      chainId: Number(chainId),
-      collectibleId: tokenId,
-      orderbookKind,
-      /* endhide */
-    });
-  };
-
-  const onAcceptOffer = () => {
-    showSellModal({
-      /* starthide */
-      collectionAddress,
-      chainId: Number(chainId),
-      tokenId,
-      order: collectible!.offer!,
-      /* endhide */
-    });
-  };
-
-  const hasOffer = Boolean(collectible?.offer);
-  const sellDisabled = !isConnected || !hasOffer || !tokenBalance;
-  const showActionButtons = address && isConnected;
+  const balance = data?.balance || 0;
+  const hasOffer = !!collectible.offer;
 
   return (
-    <div className="flex flex-col w-[350px] px-3 py-3 border border-transparent bg-[#14062a] text-left rounded-[1rem] overflow-clip">
+    <div className="flex flex-col w-[350px] p-4 bg-[#14062a] rounded-2xl text-white">
       {image ? (
-        <Image
-          className=" w-full max-w-[28rem] mx-auto aspect-square rounded-lg"
-          src={image}
-        />
+        <Image src={image} className="w-full aspect-square rounded-lg" />
       ) : (
-        <div className="w-full max-w-[28rem] mx-auto aspect-square rounded-[0.5rem] bg-grey-800 rounded-lg"></div>
+        <div className="w-full aspect-square bg-grey-800 rounded-lg" />
       )}
+      <div className="mt-4 font-bold text-lg">{name}</div>
+      <div className="text-sm">Token ID: {tokenId}</div>
+      <div className="text-sm mb-4">Owned: {balance}</div>
 
-      <div className="flex flex-col gap-4 pt-4">
-        <div className="flex flex-col gap-1 px-4">
-          <span className="text-20 font-bold leading-tight">{name || ""}</span>
-        </div>
-
-        <dl className="flex justify-between gap-4 border-t border-grey-800 px-6 py-3">
-          <div className="flex flex-col">
-            <dt className="text-11 font-medium text-grey-200 leading-[1em]">
-              Token Id
-            </dt>
-            <dd className="text-white font-bold text-14">{tokenId || ""}</dd>
-          </div>
-          <div className="flex flex-col text-end items-end">
-            <dt className="text-11 font-medium text-grey-200 leading-[1em]">
-              Owned
-            </dt>
-            <dd className="text-white font-bold text-14">{tokenBalance}</dd>
-          </div>
-        </dl>
-      </div>
-      {showActionButtons && (
+      {isConnected && balance && Number(balance) > 0 && (
         <div className="flex flex-col gap-2">
-          {tokenBalance && (
+          <button
+            className="py-2 px-3 bg-gradient-to-l from-purple-600 to-purple-800 rounded"
+            onClick={() =>
+              showListModal({
+                collectionAddress,
+                chainId,
+                collectibleId: tokenId,
+                orderbookKind,
+              })
+            }
+          >
+            List for Sale
+          </button>
+
+          {hasOffer && (
             <button
-              className="py-3 px-3 border border-transparent bg-[linear-gradient(to_left,_#7537f9,_#5826ff)] rounded-[0.5rem] min-w-[50px] font-bold text-14 cursor-pointer"
-              onClick={onClickList}
+              className="py-2 px-3 bg-gradient-to-l from-purple-600 to-purple-800 rounded"
+              onClick={() =>
+                showSellModal({
+                  collectionAddress,
+                  chainId,
+                  tokenId,
+                  order: collectible.offer,
+                })
+              }
             >
-              List for Sale
-            </button>
-          )}
-          {!sellDisabled && (
-            <button
-              className="py-3 px-3 border border-transparent bg-[linear-gradient(to_left,_#7537f9,_#5826ff)] rounded-[0.5rem] min-w-[50px] font-bold text-14 cursor-pointer"
-              onClick={onAcceptOffer}
-            >
-              Sell Now for {collectible.offer?.priceAmountFormatted}{" "}
-              {offerPriceCurrencyData?.symbol || "unknown"}
+              Sell Now for {collectible.offer.priceAmountFormatted}{" "}
+              {offerCurrency?.symbol || "?"}
             </button>
           )}
         </div>
@@ -246,3 +170,4 @@ const UserInventoryCollectible = ({
     </div>
   );
 };
+/* endhide */
