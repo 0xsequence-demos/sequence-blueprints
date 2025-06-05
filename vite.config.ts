@@ -26,10 +26,10 @@ export default defineConfig(({ mode }) => {
     ssr: {
       noExternal: [
         // "@0xsequence/connect",
-        // "@0xsequence/wallet-widget",
+        "@0xsequence/wallet-widget",
         // "@0xsequence/checkout",
         // "@0xsequence/hooks",
-        // "@0xsequence/marketplace-sdk",
+        "@0xsequence/marketplace-sdk",
         "@legendapp/state/react",
         "use-sound",
       ],
