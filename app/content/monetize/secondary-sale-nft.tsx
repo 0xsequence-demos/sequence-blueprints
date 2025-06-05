@@ -6,9 +6,10 @@ import { Resources } from "~/components/resources/Resources";
 import { Link } from "react-router";
 import { useState } from "react";
 import { CopyToClipboardButton } from "../../components/copy-to-clipboard-button/CopyToClipboardButton";
-import { SecondarySales } from "~/components/secondary-sales/SecondarySales";
 import { SecondarySalesWidget } from "~/examples/SecondarySalesWidget";
-
+import { Divide } from "~/components/divide/Divide";
+import { Collectibles } from "~/components/secondary-sales/Collectibles";
+import { UserInventory } from "~/components/secondary-sales/UserInventory";
 export const formatPriceWithDecimals = (
   price: bigint,
   tokenDecimals: number
@@ -50,25 +51,11 @@ enum Tabs {
   inventory = "inventory",
 }
 
+const chainId = 421614;
+const collectionId = "0x36631c1e690714192614364ae9629850b546d194";
+
 function component() {
   const { address: userAddress } = useAccount();
-
-  const [tab, setTab] = useState(Tabs.secondarySales);
-
-  const isSecondarySalesTabEnabled = tab === Tabs.secondarySales;
-  const isInventoryTabEnabled = tab === Tabs.inventory;
-
-  function onChangeTab() {
-    let newTab = isSecondarySalesTabEnabled
-      ? Tabs.inventory
-      : Tabs.secondarySales;
-    setTab(newTab);
-  }
-
-  const switchTabButtonContent = isSecondarySalesTabEnabled
-    ? "Switch To Inventory"
-    : "Switch To Secondary Sales";
-
   return (
     <>
       <div className="py-8 prose">
@@ -110,34 +97,35 @@ function component() {
           }
         >
           {userAddress ? (
-            <div className="flex flex-col gap-6">
-              <div className="flex justify-center">
-                <button
-                  className="py-3 px-3 border border-transparent bg-[linear-gradient(to_left,_#7537f9,_#5826ff)] rounded-[0.5rem] min-w-[50px] font-bold text-14 cursor-pointer"
-                  onClick={onChangeTab}
-                >
-                  {switchTabButtonContent}
-                </button>
-              </div>
-              <SecondarySales currentTab={tab} />
-            </div>
+            <Collectibles chainId={chainId} collectionId={collectionId}/>
           ) : (
             <AuthenticationWidget />
           )}
         </PlayCard.Preview>
+        <PlayCard.Code
+          copy={SecondarySalesWidget.String}
+          steps={SecondarySalesWidget.steps}
+        />
+      </PlayCard>
 
-        {isSecondarySalesTabEnabled && (
-          <PlayCard.Code
-            copy={SecondarySalesWidget.String}
-            steps={SecondarySalesWidget.steps}
-          />
-        )}
-        {isInventoryTabEnabled && (
-          <PlayCard.Code
-            copy={SecondarySalesInventoryWidget.String}
-            steps={SecondarySalesInventoryWidget.steps}
-          />
-        )}
+      <Divide/>
+
+      <PlayCard>
+        <PlayCard.Preview
+          botMood={
+            !userAddress ? "dead" : "neutral"
+          }
+        >
+          {userAddress ? (
+            <UserInventory chainId={chainId} collectionId={collectionId}/>
+          ) : (
+            <AuthenticationWidget />
+          )}
+        </PlayCard.Preview>
+        <PlayCard.Code
+          copy={SecondarySalesInventoryWidget.String}
+          steps={SecondarySalesInventoryWidget.steps}
+        />
       </PlayCard>
       <Resources items={["marketplace-hooks-boilerplate"]} />
     </>

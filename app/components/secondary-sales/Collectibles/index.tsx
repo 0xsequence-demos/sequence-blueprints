@@ -86,42 +86,42 @@ export const Collectibles = ({
     (collectionData?.destinationMarketplace || "") as unknown as OrderbookKind;
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex w-full flex-col gap-4">
       <h1 className="text-[32px] font-semibold">Collectibles</h1>
       {isLoadingCollectibles ? (
         <div className="flex flex-wrap gap-6 justify-center">
           <CollectableSkeleton />
         </div>
       ) : (
-        <div className="flex flex-wrap gap-6 justify-center">
-          {/* Agregar tab para inventario del usuario. */}
-          {collectiblesFlat?.map((collectible) => (
-            <Collectible
-              key={collectible.metadata.tokenId}
-              collectible={collectible}
-              chainId={String(chainId)}
-              collectionAddress={collectionId}
-              showBuyModal={showBuyModal}
-              showOfferModal={showOfferModal}
-              address={address}
-              isConnected={isConnected}
-              orderbookKind={orderbookKind}
-              priceCurrencyData={
-                currenciesData?.find(
-                  (currency) =>
-                    currency.contractAddress ===
-                    collectible.order?.priceCurrencyAddress
-                ) || null
-              }
-            />
-          ))}
-        </div>
+        <PaginationBtns
+          onChangePage={setPage}
+          currentPage={page}
+          hasMorePages={hasMorePages}
+        >
+          <div className="flex flex-wrap gap-6 justify-center">
+            {collectiblesFlat?.map((collectible) => (
+              <Collectible
+                key={collectible.metadata.tokenId}
+                collectible={collectible}
+                chainId={String(chainId)}
+                collectionAddress={collectionId}
+                showBuyModal={showBuyModal}
+                showOfferModal={showOfferModal}
+                address={address}
+                isConnected={isConnected}
+                orderbookKind={orderbookKind}
+                priceCurrencyData={
+                  currenciesData?.find(
+                    (currency) =>
+                      currency.contractAddress ===
+                      collectible.order?.priceCurrencyAddress
+                  ) || null
+                }
+              />
+            ))}
+          </div>
+        </PaginationBtns>
       )}
-      <PaginationBtns
-        onChangePage={setPage}
-        currentPage={page}
-        hasMorePages={hasMorePages}
-      />
     </div>
   );
 };

@@ -69,14 +69,14 @@ export const UserInventoryCollectible = ({
   const showActionButtons = address && isConnected;
 
   return (
-    <div className="flex flex-col w-[350px] px-3 py-3 border border-transparent bg-[#14062a] text-left rounded-[1rem] overflow-clip">
+    <div className="flex max-w-[17rem] flex-col px-3 py-3 border border-transparent bg-[#14062a] text-left rounded-[1rem] overflow-clip">
       {image ? (
         <Image
-          className=" w-full max-w-[28rem] mx-auto aspect-square rounded-lg"
+          className=" w-full max-w-[15rem] mx-auto aspect-square rounded-lg"
           src={image}
         />
       ) : (
-        <div className="w-full max-w-[28rem] mx-auto aspect-square rounded-[0.5rem] bg-grey-800 rounded-lg"></div>
+        <div className="w-full max-w-[15rem] mx-auto aspect-square rounded-[0.5rem] bg-grey-800 rounded-lg"></div>
       )}
 
       <div className="flex flex-col gap-4 pt-4">

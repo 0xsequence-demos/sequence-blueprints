@@ -2,8 +2,8 @@ import { Button } from "@0xsequence-demos/boilerplate-design-system";
 
 export function CollectableSkeleton() {
 	return (
-		<div className="flex flex-col w-[350px] px-3 py-3 border border-transparent bg-[#14062a] text-left rounded-[1rem] overflow-clip opacity-50">
-			<div className="w-full aspect-square rounded-[0.5rem] bg-grey-800 "></div>
+		<div className="flex w-full max-w-[17rem] flex-col px-3 py-3 border border-transparent bg-[#14062a] text-left rounded-[1rem] overflow-clip opacity-50">
+			<div className="mx-auto w-full max-w-[15rem] aspect-square rounded-[0.5rem] bg-grey-800"></div>
 
 			<div className="flex flex-col gap-4 pt-4">
         <div className="flex flex-col gap-1 px-4">
