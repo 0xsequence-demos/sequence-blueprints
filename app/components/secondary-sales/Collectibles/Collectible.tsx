@@ -83,7 +83,7 @@ export const Collectible = ({
         <div className="flex flex-col gap-2">
           {collectible.order && (
             <button
-              className="py-3 px-3 border border-transparent bg-[linear-gradient(to_left,_#7537f9,_#5826ff)] rounded-[0.5rem] min-w-[50px] font-bold text-14 cursor-pointer"
+              className="py-3 px-3 max-md:!py-3 max-md:!px-3 max-lg:!py-2 max-lg:!px-2 border border-transparent bg-[linear-gradient(to_left,_#7537f9,_#5826ff)] rounded-[0.5rem] min-w-[50px] font-bold text-14 max-md:text-14 max-lg:text-10 cursor-pointer"
               onClick={onClickBuy}
             >
               Buy now for {collectible.order.priceAmountFormatted}{" "}
@@ -91,7 +91,7 @@ export const Collectible = ({
             </button>
           )}
           <button
-            className="py-3 px-3 border border-transparent bg-[linear-gradient(to_left,_#7537f9,_#5826ff)] rounded-[0.5rem] min-w-[50px] font-bold text-14 cursor-pointer"
+            className="py-3 px-3 max-md:!py-3 max-md:!px-3 max-lg:!py-2 max-lg:!px-2 border border-transparent bg-[linear-gradient(to_left,_#7537f9,_#5826ff)] rounded-[0.5rem] min-w-[50px] font-bold text-14 max-md:text-14 max-lg:text-10 cursor-pointer"
             onClick={onClickOffer}
           >
             Make offer

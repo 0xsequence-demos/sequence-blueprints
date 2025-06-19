@@ -86,11 +86,19 @@ export const Collectibles = ({
     (collectionData?.destinationMarketplace || "") as unknown as OrderbookKind;
 
   return (
-    <div className="flex w-full flex-col gap-4">
-      <h1 className="text-[32px] font-semibold">Collectibles</h1>
+    <div className="flex w-full flex-col gap-4 px-2">
+      <h1 className="text-[32px] max-md:text-[32px] max-lg:text-[28px] font-semibold">
+        Collectibles
+      </h1>
       {isLoadingCollectibles ? (
         <div className="flex flex-wrap gap-6 justify-center">
-          <CollectableSkeleton />
+          <PaginationBtns
+            onChangePage={() => {}}
+            currentPage={1}
+            hasMorePages={false}
+          >
+            <CollectableSkeleton />
+          </PaginationBtns>
         </div>
       ) : (
         <PaginationBtns

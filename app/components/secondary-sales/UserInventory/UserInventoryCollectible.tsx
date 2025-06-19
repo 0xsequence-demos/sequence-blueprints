@@ -103,7 +103,7 @@ export const UserInventoryCollectible = ({
         <div className="flex flex-col gap-2">
           {tokenBalance && (
             <button
-              className="py-3 px-3 border border-transparent bg-[linear-gradient(to_left,_#7537f9,_#5826ff)] rounded-[0.5rem] min-w-[50px] font-bold text-14 cursor-pointer"
+              className="py-3 px-3 max-md:!py-3 max-md:!px-3 max-lg:!py-2 max-lg:!px-2 border border-transparent bg-[linear-gradient(to_left,_#7537f9,_#5826ff)] rounded-[0.5rem] min-w-[50px] font-bold text-14 max-md:text-14 max-lg:text-10 cursor-pointer"
               onClick={onClickList}
             >
               List for Sale
@@ -111,7 +111,7 @@ export const UserInventoryCollectible = ({
           )}
           {!sellDisabled && (
             <button
-              className="py-3 px-3 border border-transparent bg-[linear-gradient(to_left,_#7537f9,_#5826ff)] rounded-[0.5rem] min-w-[50px] font-bold text-14 cursor-pointer"
+              className="py-3 px-3 max-md:!py-3 max-md:!px-3 max-lg:!py-2 max-lg:!px-2 border border-transparent bg-[linear-gradient(to_left,_#7537f9,_#5826ff)] rounded-[0.5rem] min-w-[50px] font-bold text-14 max-md:text-14 max-lg:text-10 cursor-pointer"
               onClick={onAcceptOffer}
             >
               Sell Now for {collectible.offer?.priceAmountFormatted}{" "}
