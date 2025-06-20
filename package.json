@@ -26,7 +26,7 @@
     "@0xsequence/design-system": "^2.1.12",
     "@0xsequence/hooks": "^5.3.4",
     "@0xsequence/indexer": "^2.3.17",
-    "@0xsequence/marketplace-sdk": "^0.8.11",
+    "@0xsequence/marketplace-sdk": "https://sequence.tor1.digitaloceanspaces.com/0xsequence-marketplace-sdk-0.9.0-patch-seq-bp.tgz",
     "@0xsequence/metadata": "^2.3.17",
     "@0xsequence/network": "^2.3.17",
     "@0xsequence/wallet-widget": "^5.3.4",
