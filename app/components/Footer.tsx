@@ -30,7 +30,7 @@ export default function Footer() {
         <a href="https://ca.linkedin.com/showcase/0xsequence/">
           <Linkedin />
         </a>
-        <a href="https://discord.gg/sequence">
+        <a href="https://discord.com/invite/YnGKP7d3vS">
           <Discord />
         </a>
         <a href="https://github.com/0xsequence">
