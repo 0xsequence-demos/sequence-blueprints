@@ -1,4 +1,4 @@
-import { Button } from "boilerplate-design-system";
+import { Button } from "@0xsequence-demos/boilerplate-design-system";
 
 export function CollectableSkeleton() {
   return (

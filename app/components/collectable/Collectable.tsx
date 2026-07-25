@@ -8,7 +8,7 @@ import {
   UnpackedSaleConfigurationProps,
   formatPriceWithDecimals,
 } from "~/utils/primary-sales/helpers";
-import { Form, Svg, Image } from "boilerplate-design-system";
+import { Form, Svg, Image } from "@0xsequence-demos/boilerplate-design-system";
 import { findSupportedNetwork } from "@0xsequence/network";
 
 interface CollectibleProps {

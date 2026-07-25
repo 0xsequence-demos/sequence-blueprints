@@ -1,12 +1,12 @@
 import type { Config } from "tailwindcss";
-import boilerplateConfig from "boilerplate-design-system/tailwind-config";
+// import boilerplateConfig from "boilerplate-design-system/tailwind-config";
 
 export default {
   content: [
     "./app/**/{**,.client,.server}/**/*.{js,jsx,ts,tsx}",
     "./node_modules/boilerplate-design-system/dist/*.js",
   ],
-  presets: [boilerplateConfig],
+  // presets: [boilerplateConfig],
   theme: {
     extend: {
       backgroundImage: {

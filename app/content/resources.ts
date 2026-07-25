@@ -15,7 +15,7 @@ export type ResourceName =
   | "gift-wallet-inventory-boilerplate"
   | "crypto-onramp-boilerplate"
   | "sequence-pay-boilerplate"
-  | "ingame-marketplace-boilerplate"
+  | "marketplace-hooks-boilerplate"
   | "primary-drop-sale-721-boilerplate"
   | "primary-sale-1155-boilerplate"
   | "offchain-sales-boilerplate"
@@ -333,14 +333,28 @@ export const resources: {
       topRight: "react",
     },
   },
-  "ingame-marketplace-boilerplate": {
+  "marketplace-hooks-boilerplate": {
     image: {
-      src: "",
+      src: "bg-blue",
       alt: undefined,
     },
     type: "boilerplate",
-    title: "",
-    links: [],
+    title: "Marketplace Hooks",
+    links: [
+      {
+        label: "Demo",
+        href: "https://marketplace-hooks-boilerplate.sequence-demos.xyz",
+      },
+      {
+        label: "Source",
+        icon: "github",
+        href: "https://github.com/0xsequence-demos/marketplace-hooks-boilerplate",
+      },
+    ],
+    icons: {
+      topLeft: "kit",
+      topRight: "react",
+    }
   },
   "primary-drop-sale-721-boilerplate": {
     image: {
