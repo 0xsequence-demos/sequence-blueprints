@@ -1,44 +1,38 @@
+import { createConfig, SequenceConnect } from "@0xsequence/connect";
+import { SequenceWalletProvider } from "@0xsequence/wallet-widget";
+import type { LinksFunction } from "react-router";
 import {
   Links,
+  LoaderFunctionArgs,
   Meta,
   Scripts,
   ScrollRestoration,
   useLoaderData,
-  LoaderFunctionArgs,
   useRouteLoaderData,
 } from "react-router";
-import type { LinksFunction } from "react-router";
-import "./tailwind.css";
 import { Toaster } from "sonner";
-import {
-  getDefaultWaasConnectors,
-  SequenceConnectProvider,
-} from "@0xsequence/connect";
-import { SequenceWalletProvider } from "@0xsequence/wallet-widget";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import {
-  createConfig,
-  http,
-  WagmiProvider,
-  cookieStorage,
-  createStorage,
-  deserialize,
-  parseCookie,
-} from "wagmi";
+import { cookieStorage, createStorage, deserialize, parseCookie } from "wagmi";
+import "./tailwind.css";
 
-import chains from "~/utils/chains";
 import { Favicon } from "~/components/favicon/Favicon";
 import { useNonce } from "~/providers/nonce-provider";
+import chains from "~/utils/chains";
 
-import { SkipAhead } from "~/components/skip-ahead/SkipAhead";
-import { useState } from "react";
-import shiki from "./shiki.css?url";
+import dsbStyles from "@0xsequence-demos/boilerplate-design-system/styles/index.css?url";
 import { SequenceCheckoutProvider } from "@0xsequence/checkout";
-import { WindowController } from "~/components/window-controller/WindowController";
-import { WindowRoot } from "~/components/window-controller/WindowRoot";
-import { WindowPortal } from "~/components/window-controller/WindowPortal";
-import dsbStyles from "boilerplate-design-system/styles/index.css?url";
+import { ThemeProvider } from "@0xsequence/design-system";
+import type { SdkConfig } from "@0xsequence/marketplace-sdk";
+import {
+  MarketplaceProvider,
+  ModalProvider,
+} from "@0xsequence/marketplace-sdk/react";
 import { ChainId } from "@0xsequence/network";
+import { useState } from "react";
+import { SkipAhead } from "~/components/skip-ahead/SkipAhead";
+import { WindowController } from "~/components/window-controller/WindowController";
+import { WindowPortal } from "~/components/window-controller/WindowPortal";
+import { WindowRoot } from "~/components/window-controller/WindowRoot";
+import shiki from "./shiki.css?url";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: dsbStyles },
@@ -90,6 +84,7 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
   }
 
   return {
+    projectId: env.PROJECT_ID,
     projectAccessKey: env.PROJECT_ACCESS_KEY,
     waasConfigKey: env.WAAS_CONFIG_KEY,
     googleClientId: env.GOOGLE_CLIENT_ID,
@@ -121,7 +116,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Meta />
         <Links />
       </head>
-      <body className="flex flex-col flex-1 bg-deep-purple-950">
+      <body className="flex flex-col flex-1 bg-deep-purple-950 bg-body-complex">
         <SkipAhead>Skip to content</SkipAhead>
         {children}
         <ScrollRestoration nonce={nonce} />
@@ -132,71 +127,81 @@ export function Layout({ children }: { children: React.ReactNode }) {
   );
 }
 
-export function useConfig() {
+function useConfig() {
   const {
     projectAccessKey,
     waasConfigKey,
     googleClientId,
     appleClientId,
     appleRedirectURI,
-    walletConnectProjectId,
+    // walletConnectProjectId,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } = useRouteLoaderData<any>("root");
 
-  const connectors = getDefaultWaasConnectors({
-    walletConnectProjectId,
-    waasConfigKey,
-    googleClientId,
-    // Notice: Apple Login only works if deployed on https (to support Apple redirects)
-    appleClientId,
-    appleRedirectURI,
-    defaultChainId: ChainId.ARBITRUM_SEPOLIA,
-    appName: "WEB SDK Starter",
-    projectAccessKey,
-  });
+  // const connectors = getDefaultWaasConnectors({
+  //   walletConnectProjectId,
+  //   waasConfigKey,
+  //   googleClientId,
+  //   // Notice: Apple Login only works if deployed on https (to support Apple redirects)
+  //   appleClientId,
+  //   appleRedirectURI,
+  //   defaultChainId: ChainId.ARBITRUM_SEPOLIA,
+  //   appName: "WEB SDK Starter",
+  //   projectAccessKey,
+  // });
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const transports: { [key: number]: any } = {};
+  // const transports: { [key: number]: any } = {};
 
-  chains.forEach((chain) => {
-    transports[chain.id] = http();
-  });
+  // chains.forEach((chain) => {
+  //   transports[chain.id] = http();
+  // });
 
-  return useState(() =>
-    createConfig({
-      ssr: true,
-      transports,
-      connectors,
-      chains,
-      storage: createStorage({
-        storage: cookieStorage,
-      }),
+  const [state] = useState(() =>
+    createConfig("waas", {
+      wagmiConfig: {
+        storage: createStorage({ storage: cookieStorage }),
+        ssr: true,
+      },
+      projectAccessKey,
+      waasConfigKey,
+      googleClientId,
+      appleClientId,
+      appleRedirectURI,
+      defaultChainId: ChainId.ARBITRUM_SEPOLIA,
+      appName: "WEB SDK Starter",
+      chainIds: chains,
     }),
   );
+
+  return state;
 }
 
 export default function App() {
-  const { projectAccessKey, initialState } = useLoaderData<typeof loader>();
-  const [config] = useConfig();
-  const [queryClient] = useState(() => new QueryClient());
-  const kitConfig = {
+  const { projectAccessKey, projectId, walletConnectProjectId } =
+    useLoaderData<typeof loader>();
+  const config = useConfig();
+
+  const marketplaceSdk = {
+    projectId,
     projectAccessKey,
-  };
+    walletConnectProjectId,
+  } satisfies SdkConfig;
 
   return (
-    <WagmiProvider config={config} initialState={initialState}>
-      <QueryClientProvider client={queryClient}>
-        <SequenceConnectProvider config={kitConfig}>
-          <SequenceWalletProvider>
-            <SequenceCheckoutProvider>
+    <ThemeProvider>
+      <SequenceConnect config={config}>
+        <SequenceWalletProvider>
+          <SequenceCheckoutProvider>
+            <MarketplaceProvider config={marketplaceSdk}>
               <WindowController>
                 <WindowRoot />
                 <WindowPortal />
               </WindowController>
-            </SequenceCheckoutProvider>
-          </SequenceWalletProvider>
-        </SequenceConnectProvider>
-      </QueryClientProvider>
-    </WagmiProvider>
+              <ModalProvider />
+            </MarketplaceProvider>
+          </SequenceCheckoutProvider>
+        </SequenceWalletProvider>
+      </SequenceConnect>
+    </ThemeProvider>
   );
 }
